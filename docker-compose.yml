@@ -1,6 +1,7 @@
-PostgreSQL:
+possucluster:
   restart: always
-  image: sameersbn/postgresql:9.5-2
+  #image: kontena-registry.localgyver.com/possucluster:9.5-2
+  build: .
   ports:
     - "5432:5432"
   environment:
