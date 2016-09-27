@@ -18,5 +18,5 @@ possucluster:
     - REPLICATION_USER=
     - REPLICATION_PASS=
     - REPLICATION_SSLMODE=
-  volumes:
-    - /srv/docker/postgresql:/var/lib/postgresql
+  #volumes:
+  #  - /srv/docker/postgresql:/var/lib/postgresql

@@ -26,6 +26,13 @@ if [[ -z ${1} ]]; then
 
   configure_postgresql
 
+  echo "Starting fastcgi wrapper..."
+  spawn-fcgi -u www-data -U www-data -s /var/run/fcgiwrap.socket /usr/sbin/fcgiwrap
+  spawn-fcgi -v
+  echo "Starting nginx..."
+  nginx
+  nginx -v
+
   echo "Starting PostgreSQL ${PG_VERSION}..."
   exec start-stop-daemon --start --chuid ${PG_USER}:${PG_USER} \
     --exec ${PG_BINDIR}/postgres -- -D ${PG_DATADIR} ${EXTRA_ARGS}
