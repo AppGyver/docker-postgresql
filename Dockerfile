@@ -63,7 +63,11 @@ RUN chmod 755 /opt/health-check \
     && chmod 755 /sbin/entrypoint.sh
 
 EXPOSE 5432/tcp
+EXPOSE 15432/tcp
 VOLUME ["${PG_HOME}", "${PG_RUNDIR}"]
 WORKDIR ${PG_HOME}
+
+#TODO: Remove, only for dev/debug purposes
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --no-install-suggests -y telnet vim
 
 ENTRYPOINT ["/sbin/entrypoint.sh"]

@@ -1,14 +1,54 @@
 #!/bin/bash
 
+HOST="localhost"
+PORT="5432"
+USERNAME="postgres" #TODO: Use unprivileged user account
+#PASSWORD="secret"
+
 ##########
 # header #
 ##########
 
-echo Content-type: text/plain
-echo
+if [ "`psql -h $HOST -p $PORT -U $USERNAME -At -c 'select pg_is_in_recovery();'`" == 'f' ];
+then
+  echo -e "HTTP/1.1 200 OK\r\n"
+  echo -e "Content-Type: Content-Type: text/plain\r\n"
+  echo -e "\r\n"
+  echo -e "Postgresql is a happy master.\r\n"
+  echo -e "\r\n"
+else
+  echo -e "HTTP/1.1 503 Service Unavailable\r\n"
+  echo -e "Content-Type: Content-Type: text/plain\r\n"
+  echo -e "\r\n"
+  echo -e "Postgresql is a puny slave or down or otherwise fucked.\r\n"
+  echo -e "\r\n"
+fi
 
 ########
 # body #
 ########
 
-echo -n Hello World !
+# Teh orginal skrtipti
+# #!/bin/bash
+# HOST="localhost"
+# PORT="5432"
+# USERNAME="postgres" #TODO: Use unprivileged user account
+# #PASSWORD="secret"
+
+# #
+# # We perform a simple query that checks if postgresql is in recovery. Slaves are so if returns f it's a master.
+# #
+# if [ "`psql -h $HOST -p $PORT -U $USERNAME -At -c 'select pg_is_in_recovery()'`" == 'f' ];
+# then
+#   /bin/echo -e "HTTP/1.1 200 OK\r\n"
+#   /bin/echo -e "Content-Type: Content-Type: text/plain\r\n"
+#   /bin/echo -e "\r\n"
+#   /bin/echo -e "Postgresql is a happy master.\r\n"
+#   /bin/echo -e "\r\n"
+# else
+#   /bin/echo -e "HTTP/1.1 503 Service Unavailable\r\n"
+#   /bin/echo -e "Content-Type: Content-Type: text/plain\r\n"
+#   /bin/echo -e "\r\n"
+#   /bin/echo -e "Postgresql is a puny slave or down or otherwise fucked.\r\n"
+#   /bin/echo -e "\r\n"
+# fi
